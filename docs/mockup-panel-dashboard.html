@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>intertwin — Panel Results Mockup</title>
+<style>
+  :root{
+    --bg:#141019; --bg2:#1c1624; --card:#241c30; --card2:#2c2238;
+    --border:#3a2e49; --text:#f1ecf7; --muted:#a894bd;
+    --coral:#ff6f8e; --coral-dim:#4a2a37;
+    --teal:#4ddbc0; --teal-dim:#1f4b45;
+    --gold:#f4c869; --gold-dim:#4a3d1f;
+    --buy:#4ddbc0; --maybe:#f4c869; --pass:#ff6f8e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 800px at 10% -10%, #2a1f38 0%, var(--bg) 55%);
+    color:var(--text); padding:28px; line-height:1.4;
+  }
+  .app{max-width:1180px; margin:0 auto;}
+  .note{font-size:12px; color:var(--muted); text-align:center; margin-bottom:18px;}
+  header.product{
+    background:linear-gradient(135deg, var(--card2), var(--card));
+    border:1px solid var(--border); border-radius:16px; padding:18px 22px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .product-id{display:flex; align-items:center; gap:14px;}
+  .product-swatch{
+    width:46px; height:46px; border-radius:12px;
+    background:linear-gradient(135deg, var(--coral), var(--gold));
+    flex:none;
+  }
+  .product-name{font-size:18px; font-weight:700;}
+  .product-meta{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .chips{display:flex; gap:6px; flex-wrap:wrap;}
+  .chip{
+    font-size:11.5px; padding:4px 10px; border-radius:999px;
+    background:var(--card2); border:1px solid var(--border); color:var(--muted); white-space:nowrap;
+  }
+  .chip.warn{background:var(--coral-dim); color:var(--coral); border-color:#6b3547;}
+  .rerun-btn{
+    background:var(--coral); color:#241019; border:none; font-weight:700;
+    padding:10px 18px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .rerun-btn:active{transform:translateY(1px);}
+  .layout{display:grid; grid-template-columns:260px 1fr; gap:20px;}
+  @media (max-width:880px){ .layout{grid-template-columns:1fr;} }
+  aside.controls{
+    background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:18px;
+    align-self:start; position:sticky; top:20px;
+  }
+  aside h3{margin:0 0 4px; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);}
+  .control-block{margin-top:18px;}
+  .control-label{font-size:13px; display:flex; justify-content:space-between; margin-bottom:8px;}
+  .control-label b{color:var(--gold); font-weight:700;}
+  input[type=range]{width:100%; accent-color:var(--coral);}
+  .toggle-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 0; border-top:1px solid var(--border); font-size:12.5px;
+  }
+  .toggle-row:first-of-type{border-top:none;}
+  .switch{
+    width:36px; height:20px; border-radius:999px; background:var(--card2);
+    border:1px solid var(--border); position:relative; cursor:pointer; flex:none;
+  }
+  .switch.on{background:var(--teal-dim); border-color:var(--teal);}
+  .switch .knob{
+    position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%;
+    background:var(--muted); transition:left .15s ease;
+  }
+  .switch.on .knob{left:18px; background:var(--teal);}
+  section{margin-bottom:22px;}
+  .section-title{font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .pulse{width:7px;height:7px;border-radius:50%; background:var(--teal); box-shadow:0 0 0 0 rgba(77,219,192,.6); animation:pulse 2s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(77,219,192,.5);}70%{box-shadow:0 0 0 6px rgba(77,219,192,0);}100%{box-shadow:0 0 0 0 rgba(77,219,192,0);}}
+  .aggregate-card{
+    background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:20px;
+  }
+  .verdict-bar{height:34px; border-radius:10px; overflow:hidden; display:flex; border:1px solid var(--border);}
+  .verdict-seg{display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#1a1220; transition:width .5s cubic-bezier(.2,.9,.2,1);}
+  .seg-buy{background:var(--buy);}
+  .seg-maybe{background:var(--maybe);}
+  .seg-pass{background:var(--pass);}
+  .verdict-legend{display:flex; gap:18px; margin-top:10px; font-size:12px; color:var(--muted);}
+  .legend-dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px;}
+  .signals{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;}
+  @media (max-width:600px){.signals{grid-template-columns:1fr;}}
+  .signal-box{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px;}
+  .signal-box h4{margin:0 0 8px; font-size:12px; color:var(--muted); font-weight:600;}
+  .signal-chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .persona-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;}
+  .persona-card{
+    background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:14px;
+    cursor:pointer; transition:border-color .15s ease, transform .15s ease;
+  }
+  .persona-card:hover{border-color:var(--coral); transform:translateY(-2px);}
+  .persona-top{display:flex; gap:10px; align-items:center;}
+  .avatar{
+    width:38px; height:38px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px; color:#1a1220;
+  }
+  .persona-name{font-size:13.5px; font-weight:700;}
+  .persona-archetype{font-size:11px; color:var(--muted);}
+  .verdict-badge{
+    margin-top:10px; display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px;
+  }
+  .badge-buy{background:var(--teal-dim); color:var(--teal);}
+  .badge-maybe{background:var(--gold-dim); color:var(--gold);}
+  .badge-pass{background:var(--coral-dim); color:var(--coral);}
+  .persona-tags{display:flex; flex-wrap:wrap; gap:5px; margin-top:9px;}
+  .quote{font-size:12.5px; color:var(--text); margin-top:10px; font-style:italic; opacity:.9;}
+  .rationale{
+    font-size:12px; color:var(--muted); margin-top:10px; max-height:0; overflow:hidden; transition:max-height .25s ease;
+    border-top:1px dashed var(--border);
+  }
+  .persona-card.expanded .rationale{max-height:220px; padding-top:8px;}
+  .expand-hint{font-size:10.5px; color:var(--muted); margin-top:8px; text-align:right;}
+  .chat-panel{background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:18px;}
+  .quick-qs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .quick-q{
+    font-size:12px; background:var(--card2); border:1px solid var(--border); color:var(--text);
+    padding:7px 12px; border-radius:999px; cursor:pointer;
+  }
+  .quick-q:hover{border-color:var(--coral);}
+  .thread{display:flex; flex-direction:column; gap:10px; max-height:340px; overflow-y:auto; padding-right:4px;}
+  .msg{display:flex; gap:10px; max-width:80%;}
+  .msg.user{align-self:flex-end; flex-direction:row-reverse;}
+  .msg .bubble{
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:9px 13px; font-size:12.5px;
+  }
+  .msg.user .bubble{background:var(--coral); color:#241019; border-color:transparent; font-weight:600;}
+  .msg .who{font-size:10.5px; color:var(--muted); margin-bottom:3px;}
+  .msg .avatar{width:26px; height:26px; font-size:10px;}
+  .typing{font-size:11px; color:var(--muted); font-style:italic; padding-left:36px;}
+  .composer{display:flex; gap:8px; margin-top:12px;}
+  .composer input{
+    flex:1; background:var(--card2); border:1px solid var(--border); border-radius:10px; color:var(--text);
+    padding:10px 12px; font-size:13px;
+  }
+  .composer button{
+    background:var(--teal); color:#0e2622; border:none; border-radius:10px; padding:0 16px; font-weight:700; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="note">Illustrative mockup for the intertwin design report — verdicts/replies below are scripted for demo purposes, not live LLM output.</div>
+
+  <header class="product">
+    <div class="product-id">
+      <div class="product-swatch"></div>
+      <div>
+        <div class="product-name">Lumina 15% Vitamin C Brightening Serum</div>
+        <div class="product-meta">Skincare · Serum · 30 mL · <span id="priceLabel">$38.00</span> · US market · DTC + Sephora</div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip">15% L-Ascorbic Acid + Ferulic Acid</span>
+      <span class="chip">"Brightens dark spots in 2 weeks" (consumer test, n=128)</span>
+      <span class="chip warn">Light citrus fragrance</span>
+      <span class="chip">Cruelty-free</span>
+    </div>
+    <button class="rerun-btn" onclick="pulseRerun()">↻ Re-run panel</button>
+  </header>
+
+  <div class="layout">
+    <aside class="controls">
+      <h3>Scenario controls</h3>
+      <div class="control-block">
+        <div class="control-label"><span>Price</span><b id="priceOut">$38</b></div>
+        <input type="range" id="priceSlider" min="24" max="48" value="38" step="1" oninput="recompute()">
+        <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:4px;">
+          <span>$24</span><span>$48</span>
+        </div>
+      </div>
+      <div class="control-block">
+        <div class="toggle-row">
+          <span>Fragrance-free reformulation</span>
+          <div class="switch" id="sw-fragrance" onclick="toggleSwitch('fragrance')"><div class="knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <span>Upgrade to clinical study claim</span>
+          <div class="switch" id="sw-clinical" onclick="toggleSwitch('clinical')"><div class="knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <span>Add 7 mL trial size SKU</span>
+          <div class="switch" id="sw-trial" onclick="toggleSwitch('trial')"><div class="knob"></div></div>
+        </div>
+      </div>
+      <div class="control-block" style="font-size:11px;color:var(--muted);">
+        Panel: 6 of 11 personas shown (skincare · brightening-relevant). Adjust controls to see the panel re-react — no page reload, this simulates a live re-run.
+      </div>
+    </aside>
+
+    <main>
+      <section>
+        <div class="section-title"><span class="pulse"></span> Aggregate purchase intent — 6 personas</div>
+        <div class="aggregate-card">
+          <div class="verdict-bar">
+            <div class="verdict-seg seg-buy" id="segBuy">0%</div>
+            <div class="verdict-seg seg-maybe" id="segMaybe">0%</div>
+            <div class="verdict-seg seg-pass" id="segPass">0%</div>
+          </div>
+          <div class="verdict-legend">
+            <span><span class="legend-dot" style="background:var(--buy)"></span>Would buy</span>
+            <span><span class="legend-dot" style="background:var(--maybe)"></span>On the fence</span>
+            <span><span class="legend-dot" style="background:var(--pass)"></span>Would not buy</span>
+          </div>
+          <div class="signals">
+            <div class="signal-box">
+              <h4>Top appeals right now</h4>
+              <div class="signal-chip-row" id="appealChips"></div>
+            </div>
+            <div class="signal-box">
+              <h4>Top objections right now</h4>
+              <div class="signal-chip-row" id="objectionChips"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">Persona reactions — click a card for full rationale</div>
+        <div class="persona-grid" id="personaGrid"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Panel discussion — ask a follow-up</div>
+        <div class="chat-panel">
+          <div class="quick-qs">
+            <div class="quick-q" onclick="askPreset('switch')">What would make you switch from your current serum?</div>
+            <div class="quick-q" onclick="askPreset('worth')">Is $38 worth it for 30 mL?</div>
+            <div class="quick-q" onclick="askPreset('scent')">Does the citrus scent bother you?</div>
+          </div>
+          <div class="thread" id="thread"></div>
+          <div class="composer">
+            <input id="composerInput" placeholder="Ask the whole panel, or @ a persona by name…" onkeydown="if(event.key==='Enter')askCustom()">
+            <button onclick="askCustom()">Send</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+const personas = [
+  {id:'marisol', name:'Marisol', archetype:'Budget-Conscious Multitasker', color:'#ff6f8e',
+   tags:['Oily / acne-prone','Mass budget','Value-driven'],
+   flipBelow:30, buyBelow:26,
+   base:{v:'pass', quote:"Cute bottle, but $38 for 30 mL of vitamin C? I can get 20% from The Ordinary for a third of that.", full:"Marisol tracks cost-per-mL against her drugstore/value benchmarks. At $38 she rates this a pass — she'd need to see a clear reason this outperforms her $12 alternative. She's not fragrance-sensitive and doesn't care about the clinical-vs-consumer-test distinction; price is the whole story for her."}},
+  {id:'devon', name:'Devon', archetype:'Ingredient Researcher', color:'#4ddbc0',
+   tags:['Combination','Hyperpigmentation','Evidence-driven'],
+   claimSensitive:'clinical',
+   base:{v:'maybe', quote:"15% L-AA + ferulic is a solid stabilized combo, but 'consumer test, n=128' isn't a clinical claim — I want to see the actual study.", full:"Devon reads INCI lists before reviews. The formulation itself (L-ascorbic acid + ferulic acid, a known stabilizing pair) earns real credibility, but the evidence backing the brightening claim is a consumer perception test, not a dermatologist-graded clinical study — that gap keeps her at 'maybe' regardless of price."}},
+  {id:'priya', name:'Priya', archetype:'Clean Beauty Loyalist', color:'#f4c869',
+   tags:['Sensitive','Fragrance-free only','Ingredient-cautious'],
+   claimSensitive:'fragrance',
+   base:{v:'pass', quote:"Auto-pass the second I see 'fragrance' on a serum I'd use daily near my eyes — doesn't matter what else is in it.", full:"Priya has a hard filter: any added fragrance in a leave-on skincare product is disqualifying for her, independent of efficacy claims or price. This is a categorical rule, not a sliding preference, so she won't move off 'would not buy' until the fragrance itself is addressed."}},
+  {id:'tasha', name:'Tasha', archetype:'Luxury Skinfluencer', color:'#c78bff',
+   tags:['Normal / early aging','Prestige budget','Brand & experience'],
+   priceInsensitive:true,
+   base:{v:'buy', quote:"Weightless texture, pretty packaging, and a citrus note that actually feels premium rather than an afterthought. This films well.", full:"Tasha evaluates sensory experience and shelf/photo appeal as much as function. Price in the $30–48 band reads as 'accessible prestige' to her audience, so the slider barely moves her — she's anchored on packaging and finish, not cost-per-mL."}},
+  {id:'renee', name:'Renee', archetype:'Repurchase Loyalist', color:'#8bc7ff',
+   tags:['Dry','Brand-loyal','Dermatologist-recommended'],
+   flipBelow:28,
+   base:{v:'maybe', quote:"I've used the same derm-recommended vitamin C for three years. This would have to be noticeably cheaper or clearly better to get me to switch.", full:"Renee's switching cost is high — she has an established routine and trusts a dermatologist recommendation over a new DTC claim. A moderate price edge nudges her to 'maybe' (worth a sample); it won't move her to 'would buy' without a stronger differentiated reason to switch."}},
+  {id:'jordan', name:'Jordan', archetype:'Sample-First Skeptic', color:'#ffb15e',
+   tags:['Combo / acne-prone','Claims-skeptical','Trial-size shopper'],
+   claimSensitive:'trial',
+   base:{v:'pass', quote:"Vitamin C serums can break me out if I'm not careful. I'm not committing $38 to a full size sight unseen.", full:"Jordan has been burned by reactive skin before and refuses to buy full-size actives without trying them first. No price point fixes this — what changes his answer is the existence of a trial/sample SKU, which removes the risk of committing to a size he can't return."}},
+];
+
+let state = {price:38, fragrance:false, clinical:false, trial:false};
+
+function toggleSwitch(key){
+  state[key] = !state[key];
+  document.getElementById('sw-'+key).classList.toggle('on', state[key]);
+  recompute();
+}
+
+function verdictFor(p){
+  // start from base verdict, then apply lever overrides
+  if(p.claimSensitive === 'fragrance' && state.fragrance) return {v:'buy', quote:"Fragrance-free changes everything — this goes straight on my list.", full:p.base.full + " With the fragrance-free reformulation toggled on, Priya's hard filter no longer applies and she moves to 'would buy'."};
+  if(p.claimSensitive === 'clinical' && state.clinical) return {v:'buy', quote:"An actual clinical study behind the brightening claim is what I needed to see. Sold.", full:p.base.full + " With a clinical-study claim (vs. consumer test) toggled on, the evidence bar Devon needed is met, moving her to 'would buy'."};
+  if(p.claimSensitive === 'trial' && state.trial) return {v:'maybe', quote:"A 7 mL trial size means I can test for breakouts before committing. I'd try that.", full:p.base.full + " With a trial-size SKU available, Jordan's risk objection is addressed and he moves to 'maybe' (would try the sample first)."};
+  if(p.priceInsensitive) return p.base;
+  if(typeof p.buyBelow === 'number' && state.price <= p.buyBelow) return {v:'buy', quote:"At this price it's a clear yes.", full:p.base.full + " At $"+state.price+", the price is now low enough to move her to 'would buy' outright."};
+  if(typeof p.flipBelow === 'number' && state.price <= p.flipBelow) return {v: p.base.v === 'pass' ? 'maybe' : 'buy', quote:"That price gets my attention — I'd consider it now.", full:p.base.full + " At $"+state.price+", the lower price is enough to move her up one tier of intent."};
+  return p.base;
+}
+
+const verdictLabel = {buy:'Would buy', maybe:'On the fence', pass:'Would not buy'};
+const verdictBadgeClass = {buy:'badge-buy', maybe:'badge-maybe', pass:'badge-pass'};
+
+function initials(name){ return name.slice(0,2).toUpperCase(); }
+
+function renderPersonas(){
+  const grid = document.getElementById('personaGrid');
+  grid.innerHTML = '';
+  personas.forEach(p=>{
+    const result = verdictFor(p);
+    const card = document.createElement('div');
+    card.className = 'persona-card';
+    card.onclick = ()=>card.classList.toggle('expanded');
+    card.innerHTML = `
+      <div class="persona-top">
+        <div class="avatar" style="background:${p.color}">${initials(p.name)}</div>
+        <div>
+          <div class="persona-name">${p.name}</div>
+          <div class="persona-archetype">${p.archetype}</div>
+        </div>
+      </div>
+      <span class="verdict-badge ${verdictBadgeClass[result.v]}">${verdictLabel[result.v]}</span>
+      <div class="persona-tags">${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      <div class="quote">"${result.quote}"</div>
+      <div class="rationale">${result.full}</div>
+      <div class="expand-hint">tap to expand ▾</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function recompute(){
+  state.price = Number(document.getElementById('priceSlider').value);
+  document.getElementById('priceOut').textContent = '$'+state.price;
+  document.getElementById('priceLabel').textContent = '$'+state.price+'.00';
+
+  const results = personas.map(verdictFor);
+  const counts = {buy:0, maybe:0, pass:0};
+  results.forEach(r=>counts[r.v]++);
+  const total = personas.length;
+  const pct = k => Math.round(counts[k]/total*100);
+
+  const segBuy = document.getElementById('segBuy');
+  const segMaybe = document.getElementById('segMaybe');
+  const segPass = document.getElementById('segPass');
+  segBuy.style.width = pct('buy')+'%'; segBuy.textContent = counts.buy ? pct('buy')+'%' : '';
+  segMaybe.style.width = pct('maybe')+'%'; segMaybe.textContent = counts.maybe ? pct('maybe')+'%' : '';
+  segPass.style.width = pct('pass')+'%'; segPass.textContent = counts.pass ? pct('pass')+'%' : '';
+
+  // appeals / objections chips, derived from current toggle/price state
+  const appeals = ['Stabilized L-AA + ferulic pairing', 'Cruelty-free'];
+  const objections = [];
+  if(!state.fragrance) objections.push('Added fragrance (sensitive-skin blocker)');
+  if(!state.clinical) objections.push('Evidence is consumer-test, not clinical');
+  if(!state.trial) objections.push('No trial size — high risk to commit');
+  if(state.price > 32) objections.push('Price vs. mass-market alternatives');
+  if(state.fragrance) appeals.push('Fragrance-free reformulation');
+  if(state.clinical) appeals.push('Clinical-study-backed claim');
+  if(state.trial) appeals.push('Trial size available');
+
+  document.getElementById('appealChips').innerHTML = appeals.map(a=>`<span class="chip">${a}</span>`).join('');
+  document.getElementById('objectionChips').innerHTML = objections.map(o=>`<span class="chip warn">${o}</span>`).join('');
+
+  renderPersonas();
+}
+
+function pulseRerun(){ recompute(); }
+
+// --- chat mock ---
+const thread = document.getElementById('thread');
+function addMsg(who, text, isUser){
+  const p = personas.find(pp=>pp.name===who);
+  const div = document.createElement('div');
+  div.className = 'msg' + (isUser ? ' user' : '');
+  div.innerHTML = isUser
+    ? `<div class="bubble">${text}</div>`
+    : `<div class="avatar" style="background:${p?p.color:'#999'}">${initials(who)}</div><div><div class="who">${who}</div><div class="bubble">${text}</div></div>`;
+  thread.appendChild(div);
+  thread.scrollTop = thread.scrollHeight;
+}
+function addTyping(who){
+  const div = document.createElement('div');
+  div.className = 'typing';
+  div.id = 'typing-'+who;
+  div.textContent = who+' is typing…';
+  thread.appendChild(div);
+  thread.scrollTop = thread.scrollHeight;
+  return div;
+}
+
+const presets = {
+  switch: {q:"What would make you switch from your current serum?", a:[
+    ['Renee',"Honestly? A dermatologist backing it, or a friend's before/after. Marketing copy alone won't do it."],
+    ['Jordan',"A sample I can patch-test for two weeks without committing to a full bottle."],
+  ]},
+  worth: {q:"Is $38 worth it for 30 mL?", a:[
+    ['Marisol',"Not for me — that's $1.27/mL when I can get a comparable percentage for under 40 cents/mL elsewhere."],
+    ['Tasha',"For the texture and packaging, yes — I'd pay more for how this feels and photographs."],
+  ]},
+  scent: {q:"Does the citrus scent bother you?", a:[
+    ['Priya',"Yes — any added fragrance in a leave-on serum is a dealbreaker for me regardless of how it's dosed."],
+    ['Devon',"Not directly, but it makes me wonder if fragrance was prioritized over keeping the formula minimal."],
+  ]}
+};
+
+function askPreset(key){
+  const preset = presets[key];
+  addMsg(null, preset.q, true);
+  let delay = 500;
+  preset.a.forEach(([who, text])=>{
+    const typingEl = addTyping(who);
+    setTimeout(()=>{
+      typingEl.remove();
+      addMsg(who, text, false);
+    }, delay);
+    delay += 900;
+  });
+}
+
+function askCustom(){
+  const input = document.getElementById('composerInput');
+  const val = input.value.trim();
+  if(!val) return;
+  addMsg(null, val, true);
+  input.value = '';
+  const typingEl = addTyping('Panel');
+  setTimeout(()=>{
+    typingEl.remove();
+    addMsg('Marisol', "(mockup) In the real product this fans out to each relevant persona's own LLM call, grounded in their profile + retrieved reviews — replies stream in per-persona like the presets above.", false);
+  }, 700);
+}
+
+// init
+document.getElementById('priceSlider').value = state.price;
+recompute();
+</script>
+</body>
+</html>
