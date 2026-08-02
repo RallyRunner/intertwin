@@ -6,6 +6,7 @@ export { Chip, type ChipProps } from "./core/Chip";
 export { Icon, type IconProps } from "./core/Icon";
 export { IconButton, type IconButtonProps } from "./core/IconButton";
 export { LiveDot, type LiveDotProps } from "./core/LiveDot";
+export { Logo, type LogoProps } from "./core/Logo";
 export { SectionTitle, type SectionTitleProps } from "./core/SectionTitle";
 
 // forms

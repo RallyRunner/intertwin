@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Button, Chip, Icon, IconButton } from "@/components";
+import { Button, Chip, Icon, IconButton, Logo } from "@/components";
 import { cn } from "@/lib/cn";
 import {
   productAttributes,
@@ -32,12 +32,11 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header className="sticky top-0 z-20 flex flex-wrap items-center gap-5 border-b border-border-hairline bg-surface-glass px-7 py-3.5 backdrop-blur-glass">
-      {/* No logo was delivered — the brand name set in Instrument Serif is the
-          mark, and here it doubles as the way back to the marketing page. */}
       <Link
         href="/"
-        className="font-display text-2xl leading-snug tracking-[-.01em] text-text-primary hover:text-text-primary"
+        className="inline-flex items-center gap-[9px] font-display text-2xl leading-snug tracking-[-.01em] text-text-primary hover:text-text-primary"
       >
+        <Logo size={20} />
         intertwin
       </Link>
 

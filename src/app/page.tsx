@@ -3,7 +3,6 @@ import { CTA } from "@/components/marketing/CTA";
 import { DeltaDemo } from "@/components/marketing/DeltaDemo";
 import { Footer } from "@/components/marketing/Footer";
 import { Hero } from "@/components/marketing/Hero";
-import { Honest } from "@/components/marketing/Honest";
 import { Loop } from "@/components/marketing/Loop";
 import { Nav } from "@/components/marketing/Nav";
 import { PanelShowcase } from "@/components/marketing/PanelShowcase";
@@ -17,7 +16,6 @@ export default function LandingPage() {
       <PanelShowcase />
       <Break />
       <DeltaDemo />
-      <Honest />
       <CTA />
       <Footer />
     </div>

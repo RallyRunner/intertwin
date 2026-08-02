@@ -26,7 +26,7 @@ export function Break() {
           <p className="m-0 max-w-[1000px] font-display text-[clamp(32px,4.4vw,60px)] leading-[1.08] tracking-tight text-pretty">
             An averaged &ldquo;62% positive&rdquo; tells you nothing you can act
             on. Three objections, three different fixes, three different costs
-            to your business &mdash; and one number destroys all of it.
+            to your product &mdash; and one number destroys all of it.
           </p>
         </Reveal>
 

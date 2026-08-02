@@ -19,14 +19,7 @@ export function PanelShowcase() {
             disagree with each other.
           </h2>
           <p className="mt-5 max-w-[520px] font-sans text-[18px] leading-relaxed text-pretty text-text-secondary">
-            An averaged sentiment score destroys the only thing worth knowing.
-            The ingredient researcher wants the study. The budget shopper is
-            doing cost-per-mL maths. The clean-beauty loyalist has a fragrance
-            filter no discount will ever move.
-          </p>
-          <p className="mt-4 max-w-[520px] font-sans text-[18px] leading-relaxed text-pretty text-text-secondary">
-            Three objections. Three different fixes. Three different costs to
-            your business.
+            Predict your customer&rsquo;s feedback.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             <Chip tone="accent">52 curated personas</Chip>

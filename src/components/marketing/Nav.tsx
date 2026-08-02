@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "@/components";
+import { Button, Logo } from "@/components";
 import { cn } from "@/lib/cn";
 
 const LINKS = [
   { href: "#loop", label: "The loop" },
   { href: "#panel", label: "The panel" },
   { href: "#delta", label: "The delta" },
-  { href: "#honest", label: "What it isn’t" },
 ];
 
 /** Fixed nav. It is one of exactly two places in the system where transparency
@@ -33,12 +32,11 @@ export function Nav() {
           : "border-transparent bg-transparent",
       )}
     >
-      {/* No logo was delivered. Per the design system, everywhere a mark
-          belongs the brand name is set in Instrument Serif, lowercase. */}
       <a
         href="#top"
-        className="font-display text-2xl leading-snug tracking-[-.01em] text-text-primary"
+        className="inline-flex items-center gap-[9px] font-display text-2xl leading-snug tracking-[-.01em] text-text-primary"
       >
+        <Logo size={24} />
         intertwin
       </a>
 
