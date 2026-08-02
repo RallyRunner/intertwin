@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Core" subtitle="Buttons, icon buttons, chips, avatars, live dot" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{padding:20px;background:var(--surface-page)}.row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4);margin-bottom:var(--space-5)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { Button, IconButton, Chip, Avatar, LiveDot, SectionTitle } = window.IntertwinDesignSystem_276e72;
+function Demo(){return <div>
+<div className="row">
+<Button variant="primary">Re-run panel</Button>
+<Button variant="accent">Start a panel</Button>
+<Button variant="secondary">Edit product</Button>
+<Button variant="outline">Compare runs</Button>
+<Button variant="ghost">Cancel</Button>
+<Button variant="primary" disabled>Disabled</Button>
+</div>
+<div className="row">
+<Button size="sm" variant="secondary">Small</Button>
+<Button size="md" variant="secondary">Medium</Button>
+<Button size="lg" variant="secondary">Large</Button>
+<IconButton name="refresh-cw" label="Re-run"/>
+<IconButton name="sliders-horizontal" label="Levers" variant="outline"/>
+<IconButton name="x" label="Close" variant="ghost"/>
+</div>
+<div className="row">
+<Chip>Cruelty-free</Chip>
+<Chip tone="appeal">Stabilized L-AA + ferulic</Chip>
+<Chip tone="caution">Light citrus fragrance</Chip>
+<Chip tone="objection">No trial size</Chip>
+<Chip tone="accent">Moved this run</Chip>
+<Chip interactive>Is $38 worth it for 30 mL?</Chip>
+<Chip interactive selected>Selected</Chip>
+</div>
+<div className="row">
+{['Marisol','Devon','Priya','Tasha','Renee','Jordan'].map((n,i)=><Avatar key={n} name={n} color={`var(--persona-${i+1})`}/>)}
+<span style={{marginLeft:12}}><LiveDot/></span>
+<SectionTitle style={{marginBottom:0}}>Aggregate purchase intent</SectionTitle>
+</div>
+</div>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

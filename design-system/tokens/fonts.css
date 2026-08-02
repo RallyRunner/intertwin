@@ -1,0 +1,11 @@
+/* intertwin webfonts.
+   NOTE: the source materials shipped NO font binaries (the mockup used the system UI stack).
+   These are deliberate Google Fonts choices for the evolved system — see readme.md
+   "Font substitution" for the rationale and what to send us to replace them.
+
+   The trionn tone reference (intertwin/docs/reference-trionn.md) names a serif-display /
+   grotesque / mono triad. This system mirrors that STRUCTURE with freely-licensed faces:
+     PP Editorial      → Instrument Serif  (editorial display)
+     Neue Haas Grotesk → Instrument Sans   (neutral UI grotesque)
+     Martian Mono      → Martian Mono      (exact — it is on Google Fonts) */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Martian+Mono:wght@400;500;600;700&display=swap");

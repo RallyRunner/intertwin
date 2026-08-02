@@ -1,0 +1,83 @@
+/* ============================================================================
+   intertwin — design tokens that have no Tailwind theme namespace
+   ----------------------------------------------------------------------------
+   Everything here is carried over verbatim from design-system/tokens/*.css.
+   The semantic tokens that DO map onto a Tailwind namespace live in theme.css;
+   what remains are the raw palette ramps (the palette's internals), the two
+   gradients, the scrims, and the motion durations.
+
+   Durations stay plain custom properties on purpose: that is what lets the
+   prefers-reduced-motion block below collapse every animation in the app at
+   once. Components reach them with duration-[var(--dur-slow)].
+   ========================================================================== */
+
+:root {
+  /* -- Base: ink ramp — layered near-blacks with a faint cool cast.
+        Layered, not one flat black: depth comes from the steps, not shadow. */
+  --plum-1000: #040507;
+  --plum-950: #0a0a0e;
+  --plum-900: #101016;
+  --plum-850: #16161d;
+  --plum-800: #1e1e26;
+  --plum-700: #2b2b35;
+  --plum-600: #3d3d49;
+  --plum-500: #6b6b78;
+
+  /* -- Base: light ink ramp — a full grayscale ramp, not just white */
+  --lilac-100: #f2f1f4;
+  --lilac-200: #c9c8d0;
+  --lilac-300: #9a99a6;
+  --bone-100: #f6f2ec;
+  --break-100: #c8c6c2;
+
+  /* -- Base: semantic verdict triad (load-bearing, carried over verbatim) */
+  --teal-500: #4ddbc0;
+  --teal-900: #123330;
+  --gold-500: #f4c869;
+  --gold-900: #332a16;
+  --coral-500: #ff6f8e;
+  --coral-900: #331d26;
+
+  /* -- Backgrounds.
+        Exactly one gradient idea exists in the system: a barely-there iris
+        bloom. If you can name the gradient's colour at a glance it is too
+        strong. Never a two-stop diagonal, never behind a card or a button. */
+  --bloom-page: radial-gradient(
+    1200px 800px at 10% -10%,
+    #16131f 0%,
+    var(--plum-950) 55%
+  );
+  --bloom-hero: radial-gradient(
+    900px 600px at 50% 0%,
+    #1a1626 0%,
+    var(--plum-950) 60%
+  );
+
+  /* Protection gradients for text at bleeding section edges — never a capsule. */
+  --scrim-bottom: linear-gradient(
+    to top,
+    var(--plum-950) 0%,
+    rgb(20 16 25 / 0) 100%
+  );
+  --scrim-top: linear-gradient(
+    to bottom,
+    var(--plum-950) 0%,
+    rgb(20 16 25 / 0) 100%
+  );
+
+  /* -- Motion. Four durations, one house curve (--ease-standard, in theme.css). */
+  --dur-instant: 80ms;
+  --dur-fast: 150ms; /* hover, press, switch knob */
+  --dur-medium: 250ms; /* expand/collapse */
+  --dur-slow: 500ms; /* verdict bar re-proportioning — the signature motion */
+  --dur-reveal: 800ms; /* marketing scroll reveals */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-medium: 0ms;
+    --dur-slow: 0ms;
+    --dur-reveal: 0ms;
+  }
+}

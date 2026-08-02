@@ -1,0 +1,86 @@
+<!-- @dsCard group="intertwin app" viewport="1280x900" name="Panel results dashboard" subtitle="The v1 loop: describe → panel reacts → move a lever → watch it move" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>intertwin — app UI kit</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="data.js"></script>
+<style>body{min-height:100vh}#root{padding-bottom:80px}main,section{scroll-margin-top:80px}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" src="Shell.jsx"></script>
+<script type="text/babel" src="ProductForm.jsx"></script>
+<script type="text/babel" src="PanelSelect.jsx"></script>
+<script type="text/babel" src="Results.jsx"></script>
+<script type="text/babel" src="TweakDiff.jsx"></script>
+<script type="text/babel">
+const BASE = { price: 38, fragrance: false, clinical: false, trial: false };
+
+function App() {
+  const [step, setStep] = React.useState('results');
+  const [state, setState] = React.useState(BASE);
+  const [recalcing, setRecalcing] = React.useState(false);
+  const [moved, setMoved] = React.useState([]);
+  const [chat, setChat] = React.useState([]);
+  const [selected, setSelected] = React.useState(window.ITW.personas.map(p => p.id));
+  const [draft, setDraft] = React.useState({
+    name: 'Lumina 15% Vitamin C Brightening Serum', format: 'Serum', size: '30', price: '38.00',
+    actives: '15% L-Ascorbic Acid, 0.5% Ferulic Acid, 1% Vitamin E',
+    claim: 'Brightens dark spots in 2 weeks',
+    evidence: 'Consumer perception test (n=128)', fragrance: 'Light citrus fragrance',
+    certs: ['Cruelty-free'],
+  });
+
+  const personas = window.ITW.personas.filter(p => selected.includes(p.id));
+  const results = personas.map(p => window.ITW.verdictFor(p, state));
+  const baseResults = personas.map(p => window.ITW.verdictFor(p, BASE));
+  const prev = React.useRef(results.map(r => r.v));
+
+  React.useEffect(() => {
+    const now = results.map(r => r.v);
+    const changed = personas.filter((p, i) => now[i] !== prev.current[i]).map(p => p.id);
+    if (changed.length) {
+      setRecalcing(true);
+      setMoved(changed);
+      const t = setTimeout(() => setRecalcing(false), 700);
+      prev.current = now;
+      return () => clearTimeout(t);
+    }
+    prev.current = now;
+  }, [state, selected]);
+
+  const preset = key => {
+    const p = window.ITW.presets[key];
+    setChat(c => c.concat({ self: true, text: p.q }));
+    let d = 500;
+    p.a.forEach(([who, text]) => {
+      setChat(c => c.concat({ from: who, typing: true }));
+      setTimeout(() => setChat(c => c.filter(m => !(m.typing && m.from === who)).concat({ from: who, text })), d);
+      d += 900;
+    });
+  };
+  const send = text => {
+    setChat(c => c.concat({ self: true, text }));
+    setChat(c => c.concat({ from: 'marisol', typing: true }));
+    setTimeout(() => setChat(c => c.filter(m => !m.typing).concat({
+      from: 'marisol', text: '(demo) In the product this fans out to each relevant persona, grounded in their profile — replies stream in one at a time.' })), 800);
+  };
+
+  const canAdvance = id => true;
+
+  return (
+    <div>
+      <TopBar step={step} onStep={setStep} canAdvance={canAdvance} onRerun={() => { setRecalcing(true); setTimeout(() => setRecalcing(false), 700); }} />
+      <div style={{ padding: 'var(--space-16) var(--pad-app) 0' }}>
+        {step === 'product' && <ProductForm draft={draft} setDraft={setDraft} onNext={() => setStep('panel')} />}
+        {step === 'panel' && <PanelSelect library={window.ITW.library} selected={selected} setSelected={setSelected} onNext={() => setStep('results')} onBack={() => setStep('product')} />}
+        {step === 'results' && <Results product={window.ITW.product} personas={personas} state={state} setState={setState}
+          results={results} moved={moved} recalcing={recalcing} chat={chat} onPreset={preset} onSend={send} onCompare={() => setStep('diff')} />}
+        {step === 'diff' && <TweakDiff personas={personas} baseState={BASE} state={state} baseResults={baseResults} results={results} onBack={() => setStep('results')} />}
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

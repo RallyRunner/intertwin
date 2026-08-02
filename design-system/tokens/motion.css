@@ -1,0 +1,25 @@
+:root{
+  --dur-instant:80ms; /* @kind other */
+  --dur-fast:150ms; /* @kind other */   /* hover, press, switch knob */
+  --dur-medium:250ms; /* @kind other */ /* expand/collapse */
+  --dur-slow:500ms; /* @kind other */   /* verdict bar re-proportioning — the signature motion */
+  --dur-reveal:800ms; /* @kind other */ /* marketing scroll reveals */
+
+  --ease-standard:cubic-bezier(.2,.9,.2,1); /* @kind other */ /* the house curve */
+  --ease-out:cubic-bezier(0,0,.2,1); /* @kind other */
+  --ease-in-out:cubic-bezier(.4,0,.2,1); /* @kind other */
+
+  --transition-hover:border-color var(--dur-fast) ease, transform var(--dur-fast) ease, background-color var(--dur-fast) ease, color var(--dur-fast) ease; /* @kind other */
+  --transition-verdict:width var(--dur-slow) var(--ease-standard); /* @kind other */
+  --lift-hover:translateY(-2px); /* @kind other */
+  --press-nudge:translateY(1px); /* @kind other */
+}
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --dur-fast:0ms; /* @kind other */
+    --dur-medium:0ms; /* @kind other */
+    --dur-slow:0ms; /* @kind other */
+    --dur-reveal:0ms; /* @kind other */
+    --lift-hover:none; /* @kind other */
+  }
+}

@@ -1,0 +1,34 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Panel" subtitle="Verdict bar & badges, persona card, signals, chat" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{padding:20px;background:var(--surface-page)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { VerdictBar, VerdictBadge, PersonaCard, SignalBox, ChatMessage } = window.IntertwinDesignSystem_276e72;
+function Demo(){return <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:18}}>
+  <div style={{display:'flex',flexDirection:'column',gap:14}}>
+    <VerdictBar buy={2} fence={2} pass={2}/>
+    <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+      <VerdictBadge verdict="buy"/><VerdictBadge verdict="fence"/><VerdictBadge verdict="pass"/><VerdictBadge verdict="buy" moved/>
+    </div>
+    <SignalBox title="Top objections right now" tone="objection" items={['Added fragrance (sensitive-skin blocker)','No trial size — high risk to commit','Price vs. mass-market alternatives']}/>
+    <SignalBox title="Top appeals right now" tone="appeal" items={['Stabilized L-AA + ferulic pairing','Cruelty-free']}/>
+  </div>
+  <div style={{display:'flex',flexDirection:'column',gap:14}}>
+    <PersonaCard name="Devon" archetype="Ingredient Researcher" color="var(--persona-2)" verdict="fence"
+      tags={['Combination','Hyperpigmentation','Evidence-driven']}
+      quote="15% L-AA + ferulic is a solid stabilized combo, but 'consumer test, n=128' isn't a clinical claim."
+      rationale="Devon reads INCI lists before reviews. The formulation earns real credibility, but the evidence behind the brightening claim is a consumer perception test, not a dermatologist-graded study — that gap keeps her at 'on the fence' regardless of price."/>
+    <div style={{display:'flex',flexDirection:'column',gap:10}}>
+      <ChatMessage self text="Is $38 worth it for 30 mL?"/>
+      <ChatMessage from="Marisol" color="var(--persona-1)" text="Not for me — that's $1.27/mL when I can get a comparable percentage for under 40 cents/mL."/>
+      <ChatMessage from="Tasha" typing/>
+    </div>
+  </div>
+</div>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

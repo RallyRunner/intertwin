@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./theme.css";
+
+/* design-system/ is the delivered spec, committed verbatim as reference
+   documentation. It styles itself with inline `style` objects and never with
+   utility classes, so there is nothing in it for Tailwind to find. */
+@source not "../../design-system";
+
+/* ----------------------------------------------------------------------------
+   Base layer — design-system/tokens/base.css, translated.
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* The page wash. Fixed so the bloom stays anchored to the viewport rather
+       than scrolling away with the content. */
+    background: var(--bloom-page);
+    background-attachment: fixed;
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-text-link);
+    text-decoration: none;
+    transition: color var(--dur-fast) ease;
+  }
+
+  a:hover {
+    color: var(--color-text-link-hover);
+  }
+
+  ::selection {
+    background: var(--color-iris-700);
+    color: var(--color-text-primary);
+  }
+
+  /* Focus is visible always and never removed: iris ring, house glow. */
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-glow-focus);
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+:root{
+  --radius-xs:6px;
+  --radius-sm:8px;
+  --radius-md:10px;   /* buttons, inputs */
+  --radius-lg:12px;   /* nested surfaces, bubbles */
+  --radius-xl:14px;   /* persona cards */
+  --radius-2xl:16px;  /* panels, page-level cards */
+  --radius-3xl:24px;  /* marketing feature blocks */
+  --radius-pill:999px;
+  --radius-circle:50%;
+}

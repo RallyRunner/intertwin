@@ -1,0 +1,236 @@
+/* ============================================================================
+   intertwin — Tailwind v4 theme
+   ----------------------------------------------------------------------------
+   A mechanical translation of design-system/tokens/*.css into Tailwind v4's
+   auto-detected theme namespaces, so real utility classes get generated.
+
+   Values are carried over verbatim from the delivered design system; the
+   trailing comment on each line names the design-system token it came from.
+   This file decides nothing — design-system/readme.md is the source of truth.
+
+   Namespace map:
+     --color-*     -> bg-* / text-* / border-* / fill-*   (tokens/colors.css)
+     --font-*      -> font-*                              (tokens/typography.css)
+     --text-*      -> text-<size>                         (tokens/typography.css)
+     --leading-*   -> leading-*                           (tokens/typography.css)
+     --tracking-*  -> tracking-*                          (tokens/typography.css)
+     --radius-*    -> rounded-*                           (tokens/radius.css)
+     --shadow-*    -> shadow-*                            (tokens/elevation.css)
+     --blur-*      -> backdrop-blur-* / blur-*            (tokens/elevation.css)
+     --ease-*      -> ease-*                              (tokens/motion.css)
+     --animate-*   -> animate-*                           (tokens/base.css keyframes)
+     --spacing-*   -> p-* / gap-* / m-*                   (tokens/spacing.css)
+     --container-* -> max-w-*                             (tokens/spacing.css)
+
+   Two token groups deliberately stay OUT of @theme and live in tokens.css as
+   plain custom properties, because they have no Tailwind namespace that fits:
+     - the bloom/scrim gradients -> used via bg-[image:var(--bloom-hero)]
+     - the duration tokens       -> used via duration-[var(--dur-slow)], which
+       is what keeps the prefers-reduced-motion collapse working.
+   ========================================================================== */
+
+@theme {
+  /* ---------------------------------------------------------------- COLOR --
+     Semantic aliases only (plus the iris + persona ramps, which components
+     reference directly). The raw plum/lilac/teal/gold/coral ramp names stay in
+     tokens.css: they are the palette's internals, not its vocabulary. */
+
+  /* Brand accent — iris. Brand moments, links, focus, selection, "this moved". */
+  --color-iris-100: #e0d2ff;
+  --color-iris-300: #c2a6ff;
+  --color-iris-500: #a97bff;
+  --color-iris-700: #6d47b3;
+  --color-iris-900: #1d1630;
+
+  /* Persona avatar palette — wider than the semantic triad on purpose.
+     A persona's colour is fixed everywhere that persona appears. */
+  --color-persona-1: #ff6f8e;
+  --color-persona-2: #4ddbc0;
+  --color-persona-3: #f4c869;
+  --color-persona-4: #c78bff;
+  --color-persona-5: #8bc7ff;
+  --color-persona-6: #ffb15e;
+  --color-persona-7: #7fe08a;
+  --color-persona-8: #ff9ec4;
+
+  /* Surfaces — layered near-blacks. Depth is the surface step, never shadow. */
+  --color-surface-page: #0a0a0e; /* --plum-950 */
+  --color-surface-sunken: #040507; /* --plum-1000 */
+  --color-surface-panel: #101016; /* --plum-900 */
+  --color-surface-card: #16161d; /* --plum-850 */
+  --color-surface-raised: #1e1e26; /* --plum-800 */
+  --color-surface-overlay: rgb(10 10 14 / 0.72);
+  --color-surface-glass: rgb(30 30 38 / 0.55);
+  /* The one light break: flat, sharp-edged, at most once per page. */
+  --color-surface-break: #c8c6c2; /* --break-100 */
+
+  /* Text */
+  --color-text-primary: #f2f1f4; /* --lilac-100 */
+  --color-text-secondary: #9a99a6; /* --lilac-300 */
+  --color-text-faint: #6b6b78; /* --plum-500 */
+  --color-text-inverse: #0a0a0e;
+  --color-text-accent: #c2a6ff; /* --iris-300 */
+  --color-text-link: #c2a6ff; /* --iris-300 */
+  --color-text-link-hover: #e0d2ff; /* --iris-100 */
+  /* Text on the inverted break band */
+  --color-text-on-break: #14141a;
+  --color-text-on-break-muted: #4e4e58;
+
+  /* Lines */
+  --color-border-hairline: #2b2b35; /* --plum-700 */
+  --color-border-strong: #3d3d49; /* --plum-600 */
+  --color-border-accent: #a97bff; /* --iris-500 */
+  --color-border-focus: #c2a6ff; /* --iris-300 */
+  --color-border-on-break: rgb(20 20 26 / 0.16);
+
+  /* Actions — the primary CTA is BONE, not coral. Coral is reserved for the
+     "would not buy" verdict and must never be a button fill. */
+  --color-action-primary-bg: #f6f2ec; /* --bone-100 */
+  --color-action-primary-bg-hover: #ffffff;
+  --color-action-primary-fg: #0a0a0e;
+  --color-action-secondary-bg: #1e1e26; /* --plum-800 */
+  --color-action-secondary-bg-hover: #2b2b35; /* --plum-700 */
+  --color-action-secondary-fg: #f2f1f4; /* --lilac-100 */
+  --color-action-ghost-fg: #9a99a6; /* --lilac-300 */
+  --color-action-accent-bg: #a97bff; /* --iris-500 */
+  --color-action-accent-fg: #0a0a0e;
+  --color-action-disabled-bg: #1e1e26; /* --plum-800 */
+  --color-action-disabled-fg: #6b6b78; /* --plum-500 */
+
+  /* Verdicts — load-bearing, never remapped.
+     teal = would buy · gold = on the fence · coral = would not buy. */
+  --color-verdict-buy: #4ddbc0; /* --teal-500 */
+  --color-verdict-buy-bg: #123330; /* --teal-900 */
+  --color-verdict-fence: #f4c869; /* --gold-500 */
+  --color-verdict-fence-bg: #332a16; /* --gold-900 */
+  --color-verdict-pass: #ff6f8e; /* --coral-500 */
+  --color-verdict-pass-bg: #331d26; /* --coral-900 */
+  --color-verdict-fg-on-fill: #0a0a0e;
+  /* Chip hairlines for the verdict tones. Literal in the delivered Chip.jsx;
+     named here so no component carries a magic hex. */
+  --color-verdict-buy-border: #1f5750;
+  --color-verdict-fence-border: #544625;
+  --color-verdict-pass-border: #54303e;
+
+  /* Signals */
+  --color-signal-live: #4ddbc0; /* --teal-500 */
+  --color-signal-objection: #ff6f8e; /* --coral-500 */
+  --color-signal-appeal: #4ddbc0; /* --teal-500 */
+  --color-signal-moved: #c2a6ff; /* --iris-300 */
+
+  /* ------------------------------------------------------------- TYPE ------
+     Families are wired to the next/font/google variables set in layout.tsx.
+     The fallback stacks are carried over from tokens/typography.css. */
+  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-instrument-sans), "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  --font-mono: var(--font-martian-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+
+  /* Size ramp. 13px (--text-base) is the base UI size, matching the source
+     mockup — the 12.5/13.5/9.5px values are deliberate, not a broken scale.
+     Each size carries an explicit paired line-height so a bare text-* utility
+     never inherits a Tailwind default that the design system did not choose. */
+  --text-telemetry: 9.5px;
+  --text-telemetry--line-height: 1;
+  --text-3xs: 10.5px;
+  --text-3xs--line-height: 1.4;
+  --text-2xs: 11.5px;
+  --text-2xs--line-height: 1.4;
+  --text-xs: 12px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 12.5px;
+  --text-sm--line-height: 1.4;
+  --text-base: 13px;
+  --text-base--line-height: 1.4;
+  --text-md: 14px;
+  --text-md--line-height: 1.4;
+  --text-lg: 16px;
+  --text-lg--line-height: 1.6;
+  --text-xl: 18px;
+  --text-xl--line-height: 1.2;
+  --text-2xl: 22px;
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 28px;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 38px;
+  --text-4xl--line-height: 1.05;
+  --text-5xl: 56px;
+  --text-5xl--line-height: 1.05;
+  --text-6xl: 80px;
+  --text-6xl--line-height: 1.05;
+  --text-7xl: 120px;
+  --text-7xl--line-height: 1.05;
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.2;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.6;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-label: 0.04em;
+  --tracking-caps: 0.12em;
+
+  /* ----------------------------------------------------------- RADIUS ------ */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px; /* buttons, inputs */
+  --radius-lg: 12px; /* nested surfaces, bubbles */
+  --radius-xl: 14px; /* persona cards */
+  --radius-2xl: 16px; /* panels, page-level cards */
+  --radius-3xl: 24px; /* marketing feature blocks */
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* -------------------------------------------------------- ELEVATION ------
+     Shadow is almost absent on dark. The only coloured shadows are iris glows. */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-raised: 0 6px 20px rgb(0 0 0 / 0.45);
+  --shadow-overlay: 0 24px 60px rgb(0 0 0 / 0.6);
+  --shadow-glow-focus: 0 0 0 3px rgb(169 123 255 / 0.32);
+  --shadow-glow-accent: 0 0 32px rgb(169 123 255 / 0.28);
+  --shadow-glow-live: 0 0 0 0 rgb(77 219 192 / 0.5);
+  --shadow-glow-moved:
+    0 0 0 1px var(--color-iris-500), 0 0 24px rgb(169 123 255 / 0.22);
+
+  --blur-glass: 14px;
+
+  /* ----------------------------------------------------------- MOTION ------
+     The house curve. Durations live in tokens.css so prefers-reduced-motion
+     can zero them; use them as duration-[var(--dur-slow)]. */
+  --ease-standard: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* The one pulse in the system: the teal LiveDot. */
+  --animate-pulse-live: it-pulse 2s infinite;
+
+  @keyframes it-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(77 219 192 / 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgb(77 219 192 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(77 219 192 / 0);
+    }
+  }
+
+  /* ---------------------------------------------------------- SPACING ------
+     The scale is deliberately NOT a strict 4px grid, but every value on it is
+     an exact multiple of Tailwind's 0.25rem step, so the numeric utilities
+     reproduce it exactly: gap-1.5=6px, gap-2.5=10px, p-3.5=14px, p-4.5=18px,
+     p-7=28px, py-22=88px. Only the *named* semantic spacing needs tokens. */
+  --spacing-inline: 6px; /* --gap-inline: chips, tags, icon+label */
+  --spacing-stack: 10px; /* --gap-stack: label -> control */
+  --spacing-card: 14px; /* --gap-card: between cards in a grid */
+  --spacing-section: 22px; /* --gap-section: between dashboard sections */
+  --spacing-page: 88px; /* --gap-page: between marketing page bands */
+
+  --container-app: 1180px;
+  --container-marketing: 1320px;
+  --container-prose: 640px;
+  --container-rail: 260px; /* --rail-controls */
+}

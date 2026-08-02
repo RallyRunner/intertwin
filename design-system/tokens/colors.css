@@ -1,0 +1,110 @@
+:root{
+  /* ---- Base: ink ramp — layered near-blacks with a faint cool cast.
+     Layered, not one flat black: depth comes from the steps, not from shadow. ---- */
+  --plum-1000:#040507;
+  --plum-950:#0a0a0e;
+  --plum-900:#101016;
+  --plum-850:#16161d;
+  --plum-800:#1e1e26;
+  --plum-700:#2b2b35;
+  --plum-600:#3d3d49;
+  --plum-500:#6b6b78;
+
+  /* ---- Base: light ink ramp — a full grayscale ramp, not just white ---- */
+  --lilac-100:#f2f1f4;
+  --lilac-200:#c9c8d0;
+  --lilac-300:#9a99a6;
+  --bone-100:#f6f2ec;
+  /* The one light break: a flat, sharp-edged light panel used at most once per page. */
+  --break-100:#c8c6c2;
+
+  /* ---- Base: brand accent (iris) ---- */
+  --iris-100:#e0d2ff;
+  --iris-300:#c2a6ff;
+  --iris-500:#a97bff;
+  --iris-700:#6d47b3;
+  --iris-900:#1d1630;
+
+  /* ---- Base: semantic verdict triad (load-bearing, carried over verbatim) ---- */
+  --teal-500:#4ddbc0;
+  --teal-900:#123330;
+  --gold-500:#f4c869;
+  --gold-900:#332a16;
+  --coral-500:#ff6f8e;
+  --coral-900:#331d26;
+
+  /* ---- Base: persona avatar palette (wider than the semantic triad on purpose) ---- */
+  --persona-1:#ff6f8e;
+  --persona-2:#4ddbc0;
+  --persona-3:#f4c869;
+  --persona-4:#c78bff;
+  --persona-5:#8bc7ff;
+  --persona-6:#ffb15e;
+  --persona-7:#7fe08a;
+  --persona-8:#ff9ec4;
+
+  /* ================= Semantic aliases ================= */
+
+  /* Surfaces */
+  --surface-page:var(--plum-950);
+  --surface-sunken:var(--plum-1000);
+  --surface-panel:var(--plum-900);
+  --surface-card:var(--plum-850);
+  --surface-raised:var(--plum-800);
+  --surface-overlay:rgba(10,10,14,.72);
+  --surface-glass:rgba(30,30,38,.55);
+  /* Inverted band. Sharp-edged, full-bleed, no radius, no border. Marketing only. */
+  --surface-break:var(--break-100);
+  --text-on-break:#14141a;
+  --text-on-break-muted:#4e4e58;
+  --border-on-break:rgba(20,20,26,.16);
+
+  /* The page wash: near-flat black with one barely-there iris bloom. If you can name
+     the gradient's colour at a glance, it is too strong. Never a two-stop diagonal. */
+  --bloom-page:radial-gradient(1200px 800px at 10% -10%, #16131f 0%, var(--plum-950) 55%);
+  --bloom-hero:radial-gradient(900px 600px at 50% 0%, #1a1626 0%, var(--plum-950) 60%);
+
+  /* Text */
+  --text-primary:var(--lilac-100);
+  --text-secondary:var(--lilac-300);
+  --text-faint:var(--plum-500);
+  --text-inverse:#0a0a0e;
+  --text-accent:var(--iris-300);
+  --text-link:var(--iris-300);
+  --text-link-hover:var(--iris-100);
+
+  /* Lines */
+  --border-hairline:var(--plum-700);
+  --border-strong:var(--plum-600);
+  --border-accent:var(--iris-500);
+  --border-focus:var(--iris-300);
+
+  /* Actions — the primary CTA is BONE, not coral.
+     Coral is reserved for the "would not buy" verdict; see readme.md. */
+  --action-primary-bg:var(--bone-100);
+  --action-primary-bg-hover:#ffffff;
+  --action-primary-fg:#0a0a0e;
+  --action-secondary-bg:var(--plum-800);
+  --action-secondary-bg-hover:var(--plum-700);
+  --action-secondary-fg:var(--lilac-100);
+  --action-ghost-fg:var(--lilac-300);
+  --action-accent-bg:var(--iris-500);
+  --action-accent-fg:#0a0a0e;
+  --action-disabled-bg:var(--plum-800);
+  --action-disabled-fg:var(--plum-500);
+
+  /* Verdicts */
+  --verdict-buy:var(--teal-500);
+  --verdict-buy-bg:var(--teal-900);
+  --verdict-fence:var(--gold-500);
+  --verdict-fence-bg:var(--gold-900);
+  --verdict-pass:var(--coral-500);
+  --verdict-pass-bg:var(--coral-900);
+  --verdict-fg-on-fill:#0a0a0e;
+
+  /* Signals */
+  --signal-live:var(--teal-500);
+  --signal-objection:var(--coral-500);
+  --signal-appeal:var(--teal-500);
+  --signal-moved:var(--iris-300);
+}

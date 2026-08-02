@@ -1,0 +1,40 @@
+:root{
+  --space-0:0px;
+  --space-1:2px;
+  --space-2:4px;
+  --space-3:6px;
+  --space-4:8px;
+  --space-5:10px;
+  --space-6:12px;
+  --space-7:14px;
+  --space-8:16px;
+  --space-9:18px;
+  --space-10:20px;
+  --space-11:22px;
+  --space-12:28px;
+  --space-14:36px;
+  --space-16:48px;
+  --space-20:64px;
+  --space-24:88px;
+  --space-32:120px;
+  --space-40:160px;
+
+  /* Semantic spacing */
+  --gap-inline:var(--space-3);       /* chips, tags, icon+label */
+  --gap-stack:var(--space-5);        /* label -> control */
+  --gap-card:var(--space-7);         /* between cards in a grid */
+  --gap-section:var(--space-11);     /* between dashboard sections */
+  --gap-page:var(--space-24);        /* between marketing page bands */
+
+  --pad-chip:4px 10px;
+  --pad-control:10px 12px;
+  --pad-card:14px;
+  --pad-panel:18px;
+  --pad-panel-lg:20px;
+  --pad-app:28px;
+
+  --container-app:1180px;
+  --container-marketing:1320px;
+  --container-prose:640px;
+  --rail-controls:260px;
+}
