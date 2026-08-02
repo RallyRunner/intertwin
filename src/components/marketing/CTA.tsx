@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components";
 import { cn } from "@/lib/cn";
 import { BAND, BIG_HEAD } from "./bands";
@@ -14,12 +15,11 @@ export function CTA() {
             before it costs you.
           </h2>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            {/* The reference points this at the app loop, which is a follow-up
-                task. Until that route exists it points at the live panel on
-                this page — the same thing it is inviting you to do. */}
-            <Button variant="primary" size="lg" href="#delta">
-              Run a panel
-            </Button>
+            <Link href="/panel" className="inline-flex">
+              <Button variant="primary" size="lg" as="div">
+                Run a panel
+              </Button>
+            </Link>
             <Button variant="outline" size="lg">
               Talk to us
             </Button>

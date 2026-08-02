@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components";
 import { cn } from "@/lib/cn";
@@ -54,9 +55,13 @@ export function Nav() {
       </nav>
 
       <div className="ml-auto">
-        <Button variant="primary" size="sm" href="#cta">
-          Run a panel
-        </Button>
+        {/* Link owns the navigation (prefetch + client transition), Button owns
+            the chrome — hence as="div", the variant it ships for this case. */}
+        <Link href="/panel" className="inline-flex">
+          <Button variant="primary" size="sm" as="div">
+            Run a panel
+          </Button>
+        </Link>
       </div>
     </header>
   );

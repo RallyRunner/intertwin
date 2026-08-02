@@ -25,6 +25,9 @@ export interface InputProps {
   type?: string;
   disabled?: boolean;
   rows?: number;
+  /** Accessible name for a placeholder-only input, i.e. one with no Field
+   *  label above it. Same escape hatch Slider ships. */
+  "aria-label"?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => void;
   onKeyDown?: (e: KeyboardEvent) => void;
   className?: string;

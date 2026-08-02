@@ -43,7 +43,17 @@ Conventions that are load-bearing:
 - Icons: `lucide-react`'s `DynamicIcon`, keeping the kebab-case `name` contract. Icons
   render after mount, so they do not appear in SSR output.
 
-`design-system/ui_kits/app/` is the v1 product-loop reference and is not built yet.
+## The product loop
+
+`/panel` (`src/app/panel/page.tsx` → `src/components/app/`) is the v1 loop, ported from
+the reference kit in `design-system/ui_kits/app/`. It is deliberately **one route with
+four wizard steps** (`steps.ts`) sharing one in-memory session — there is nothing to
+persist yet, so no per-screen URLs and no state in search params.
+
+`src/lib/panel-data.ts` holds every fixture and rule the panel runs on (personas, the
+library, verdict rules, signal derivation, chat presets) and is shared with the landing
+page's demo — extend it rather than duplicating a persona or a rule. Verdicts and replies
+are scripted, not model output; the disclosure on screen C says so and must stay true.
 
 ## Maintaining this file
 

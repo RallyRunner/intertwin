@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button, Icon, LiveDot } from "@/components";
 import { Reveal } from "./Reveal";
@@ -52,9 +53,11 @@ export function Hero() {
 
         <Reveal delay={240}>
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Button variant="primary" size="lg" href="#cta">
-              Run your first panel
-            </Button>
+            <Link href="/panel" className="inline-flex">
+              <Button variant="primary" size="lg" as="div">
+                Run your first panel
+              </Button>
+            </Link>
             <Button variant="outline" size="lg" href="#loop">
               See the loop
               <Icon name="arrow-down" size={15} />

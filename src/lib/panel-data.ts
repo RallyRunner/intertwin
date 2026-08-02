@@ -15,12 +15,17 @@ export interface PersonaReaction {
   full: string;
 }
 
-export interface Persona {
+/** An entry in the platform-curated library shown on the panel-selection
+ *  screen. Identity only — a library persona carries no scripted reaction. */
+export interface LibraryPersona {
   id: string;
   name: string;
   archetype: string;
   color: string;
   tags: string[];
+}
+
+export interface Persona extends LibraryPersona {
   /** Price at which this persona moves up one tier of intent. */
   flipBelow?: number;
   /** Price at which this persona moves to "would buy" outright. */
@@ -127,6 +132,58 @@ export const personas: Persona[] = [
   },
 ];
 
+/**
+ * The wider platform-curated library shown on the panel-selection screen.
+ * Personas are platform-curated in v1 — you can include or exclude, not edit —
+ * and only the six scripted ones above carry reactions, so a run is always the
+ * intersection of `personas` and the selection.
+ */
+export const library: LibraryPersona[] = [
+  ...personas,
+  {
+    id: "aiko",
+    name: "Aiko",
+    archetype: "Routine Minimalist",
+    color: "var(--color-persona-7)",
+    tags: ["Normal", "Few-step routine"],
+  },
+  {
+    id: "noor",
+    name: "Noor",
+    archetype: "Derm-Guided Treater",
+    color: "var(--color-persona-8)",
+    tags: ["Melasma", "Prescription-adjacent"],
+  },
+  {
+    id: "beatriz",
+    name: "Beatriz",
+    archetype: "Value Bulk Buyer",
+    color: "var(--color-persona-1)",
+    tags: ["Combination", "Warehouse channel"],
+  },
+  {
+    id: "kenji",
+    name: "Kenji",
+    archetype: "Texture-First Shopper",
+    color: "var(--color-persona-2)",
+    tags: ["Oily", "Layering-heavy"],
+  },
+  {
+    id: "harriet",
+    name: "Harriet",
+    archetype: "Mature Skin Pragmatist",
+    color: "var(--color-persona-5)",
+    tags: ["Dry / mature", "Efficacy-first"],
+  },
+  {
+    id: "sol",
+    name: "Sol",
+    archetype: "Sustainability Screener",
+    color: "var(--color-persona-7)",
+    tags: ["Refill-seeking", "Packaging-critical"],
+  },
+];
+
 /** Which verdict this persona returns under a given scenario. */
 export function verdictFor(p: Persona, s: Scenario): PersonaReaction {
   const base = p.base;
@@ -193,3 +250,200 @@ export function signals(s: Scenario): {
 
   return { appeals, objections };
 }
+
+/* ---------------------------------------------------------------------------
+   Screen A — the described product.
+
+   The UI kit kept the form draft and the product header as two separate
+   fixtures. Here they are one: what you type on screen A is the product the
+   panel screens show, and the two form answers that map onto scenario levers
+   (evidence, fragrance) seed the baseline the levers move away from. The
+   verdicts themselves stay scripted — see the disclosure on screen C.
+   ------------------------------------------------------------------------- */
+
+export interface ProductDraft {
+  name: string;
+  category: string;
+  format: string;
+  /** mL, as typed. */
+  size: string;
+  /** Dollars, as typed. */
+  price: string;
+  actives: string;
+  claim: string;
+  evidence: string;
+  fragrance: string;
+  certs: string[];
+  market: string;
+  channel: string;
+}
+
+export const CATEGORY_OPTIONS = ["Skincare"];
+export const FORMAT_OPTIONS = [
+  "Serum",
+  "Cream",
+  "Cleanser",
+  "Toner",
+  "Mask",
+  "Oil",
+];
+/** The one evidence answer the evidence-driven personas accept. */
+export const CLINICAL_EVIDENCE = "Clinical study, dermatologist-graded";
+export const EVIDENCE_OPTIONS = [
+  "Consumer perception test (n=128)",
+  CLINICAL_EVIDENCE,
+  "In-vitro only",
+  "No evidence cited",
+];
+/** The one fragrance answer that clears a categorical fragrance filter. */
+export const FRAGRANCE_FREE = "Fragrance-free (no masking)";
+export const FRAGRANCE_OPTIONS = [
+  "Light citrus fragrance",
+  "Unscented",
+  FRAGRANCE_FREE,
+];
+export const CERT_OPTIONS = [
+  "Cruelty-free",
+  "Vegan",
+  "Dermatologist-tested",
+  "Reef-safe",
+  "Refillable",
+];
+export const MARKET_OPTIONS = ["US market", "UK market", "EU market"];
+export const CHANNEL_OPTIONS = [
+  "DTC + Sephora",
+  "DTC only",
+  "Mass retail",
+  "Pharmacy",
+];
+
+/** The product the kit ships pre-filled, so the loop opens on a real brief. */
+export const DEFAULT_DRAFT: ProductDraft = {
+  name: "Lumina 15% Vitamin C Brightening Serum",
+  category: "Skincare",
+  format: "Serum",
+  size: "30",
+  price: "38.00",
+  actives: "15% L-Ascorbic Acid, 0.5% Ferulic Acid, 1% Vitamin E",
+  claim: "Brightens dark spots in 2 weeks",
+  evidence: "Consumer perception test (n=128)",
+  fragrance: "Light citrus fragrance",
+  certs: ["Cruelty-free"],
+  market: "US market",
+  channel: "DTC + Sephora",
+};
+
+/** Price lever bounds. The slider and the form clamp to the same window. */
+export const PRICE_MIN = 24;
+export const PRICE_MAX = 48;
+
+/** The baseline scenario a described product runs at, before any lever moves. */
+export function scenarioFromDraft(draft: ProductDraft): Scenario {
+  const typed = Number.parseFloat(draft.price);
+  const price = Number.isFinite(typed) ? Math.round(typed) : 38;
+  return {
+    price: Math.min(PRICE_MAX, Math.max(PRICE_MIN, price)),
+    fragrance: draft.fragrance === FRAGRANCE_FREE,
+    clinical: draft.evidence === CLINICAL_EVIDENCE,
+    // No trial-SKU question on screen A — it exists only as a lever.
+    trial: false,
+  };
+}
+
+export interface ProductAttribute {
+  label: string;
+  tone?: "neutral" | "appeal" | "objection";
+}
+
+/** The attribute chips in the product header — what a shopper would see on
+ *  pack, read through the levers currently in play. */
+export function productAttributes(
+  draft: ProductDraft,
+  s: Scenario,
+): ProductAttribute[] {
+  const attrs: ProductAttribute[] = draft.actives
+    .split(",")
+    .map((a) => a.trim())
+    .filter(Boolean)
+    .map((label) => ({ label }));
+
+  if (draft.claim.trim()) {
+    attrs.push({
+      label: `“${draft.claim.trim()}” (${
+        s.clinical ? "clinical study, derm-graded" : "consumer test"
+      })`,
+      tone: s.clinical ? "appeal" : "neutral",
+    });
+  }
+
+  attrs.push(
+    s.fragrance
+      ? { label: FRAGRANCE_FREE, tone: "appeal" }
+      : { label: draft.fragrance, tone: "objection" },
+  );
+
+  if (s.trial) attrs.push({ label: "7 mL trial size", tone: "appeal" });
+
+  return attrs.concat(draft.certs.map((label) => ({ label })));
+}
+
+/* ---------------------------------------------------------------------------
+   Panel chat. Scripted presets, ported verbatim from the UI kit's data.js.
+   ------------------------------------------------------------------------- */
+
+export type PresetKey = "switch" | "worth" | "scent";
+
+export interface ChatPreset {
+  q: string;
+  /** [persona id, reply], answered in order with a typing delay between. */
+  a: Array<[string, string]>;
+}
+
+export const presets: Record<PresetKey, ChatPreset> = {
+  switch: {
+    q: "What would make you switch from your current serum?",
+    a: [
+      [
+        "renee",
+        "Honestly? A dermatologist backing it, or a friend's before/after. Marketing copy alone won't do it.",
+      ],
+      [
+        "jordan",
+        "A sample I can patch-test for two weeks without committing to a full bottle.",
+      ],
+    ],
+  },
+  worth: {
+    q: "Is $38 worth it for 30 mL?",
+    a: [
+      [
+        "marisol",
+        "Not for me — that's $1.27/mL when I can get a comparable percentage for under 40 cents/mL elsewhere.",
+      ],
+      [
+        "tasha",
+        "For the texture and packaging, yes — I'd pay more for how this feels and photographs.",
+      ],
+    ],
+  },
+  scent: {
+    q: "Does the citrus scent bother you?",
+    a: [
+      [
+        "priya",
+        "Yes — any added fragrance in a leave-on serum is a dealbreaker for me regardless of how it's dosed.",
+      ],
+      [
+        "devon",
+        "Not directly, but it makes me wonder if fragrance was prioritised over keeping the formula minimal.",
+      ],
+    ],
+  },
+};
+
+export const PRESET_ORDER: PresetKey[] = ["switch", "worth", "scent"];
+
+/** Free-text answers are not scripted, so the panel says so in its own voice
+ *  rather than inventing a reaction the fixtures cannot ground. */
+export const FREE_TEXT_REPLY =
+  "(demo) In the product this fans out to each relevant persona, grounded in their profile — replies stream in one at a time.";
