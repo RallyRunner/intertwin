@@ -105,6 +105,8 @@ Pulled directly from the mockup's CSS variables, so you don't have to reverse-en
 
 The mockup also carries dimmed variants of each accent (`--coral-dim`, `--gold-dim`, `--teal-dim`) used as badge and chip backgrounds against the dark surfaces, plus per-persona avatar colors drawn from a wider set than the three semantic accents.
 
+For additional context, an external tone/palette reference captured from another site is available at `docs/reference-trionn.md` — it's a mood comparison point, not intertwin's palette.
+
 ---
 
 ## Out of scope for v1
